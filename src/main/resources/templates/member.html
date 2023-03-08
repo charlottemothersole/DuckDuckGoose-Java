@@ -51,7 +51,7 @@
             <div class="card-body">
               <h5 class="card-title">
                 <span th:text="${'@' + model.getMember().getUsername()}"></span>
-                <span class="text-muted">&bullet; TODO: TIMESTAMP</span>
+                <span class="text-muted">&bullet; <span th:text="${#dates.format(honk.getTimestamp(), 'dd MMM yyyy')}"></span></span>
               </h5>
               <p class="card-text" th:text="${honk.getContent()}"></p>
             </div>

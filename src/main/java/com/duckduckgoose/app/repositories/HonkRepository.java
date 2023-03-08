@@ -10,14 +10,16 @@ import java.util.Set;
 
 public interface HonkRepository extends JpaRepository<Honk, Long> {
 
-    Page<Honk> findByContentContaining(String search, Pageable pageable);
+    Page<Honk> findAllByOrderByTimestampDesc(Pageable pageable);
 
-    Page<Honk> findByAuthor(Member author, Pageable pageable);
+    Page<Honk> findByContentContainingOrderByTimestampDesc(String search, Pageable pageable);
 
-    Page<Honk> findByContentContainingAndAuthor(String search, Member author, Pageable pageable);
+    Page<Honk> findByAuthorOrderByTimestampDesc(Member author, Pageable pageable);
 
-    Page<Honk> findByAuthorIn(Set<Member> members, Pageable pageable);
+    Page<Honk> findByContentContainingAndAuthorOrderByTimestampDesc(String search, Member author, Pageable pageable);
 
-    Page<Honk> findByContentContainingAndAuthorIn(String search, Set<Member> members, Pageable pageable);
+    Page<Honk> findByAuthorInOrderByTimestampDesc(Set<Member> members, Pageable pageable);
+
+    Page<Honk> findByContentContainingAndAuthorInOrderByTimestampDesc(String search, Set<Member> members, Pageable pageable);
 
 }

@@ -27,29 +27,29 @@ public class HonkService {
     }
 
     public Page<Honk> getHonks(Pageable pageable) {
-        return honkRepository.findAll(pageable);
+        return honkRepository.findAllByOrderByTimestampDesc(pageable);
     }
 
     public Page<Honk> getHonksContaining(String search, Pageable pageable) {
-        return honkRepository.findByContentContaining(search, pageable);
+        return honkRepository.findByContentContainingOrderByTimestampDesc(search, pageable);
     }
 
     public Page<Honk> getMemberHonks(Member author, Pageable pageable) {
-        return honkRepository.findByAuthor(author, pageable);
+        return honkRepository.findByAuthorOrderByTimestampDesc(author, pageable);
     }
 
     public Page<Honk> getMemberHonksContaining(String search, Member author, Pageable pageable) {
-        return honkRepository.findByContentContainingAndAuthor(search, author, pageable);
+        return honkRepository.findByContentContainingAndAuthorOrderByTimestampDesc(search, author, pageable);
     }
 
     public Page<Honk> getFollowedMemberHonks(Member followerMember, Pageable pageable) {
         Set<Member> followedMembers = memberRepository.findByFollowerMembersContaining(followerMember);
-        return honkRepository.findByAuthorIn(followedMembers, pageable);
+        return honkRepository.findByAuthorInOrderByTimestampDesc(followedMembers, pageable);
     }
 
     public Page<Honk> getFollowedMemberHonksContaining(String search, Member followerMember, Pageable pageable) {
         Set<Member> followedMembers = memberRepository.findByFollowerMembersContaining(followerMember);
-        return honkRepository.findByContentContainingAndAuthorIn(search, followedMembers, pageable);
+        return honkRepository.findByContentContainingAndAuthorInOrderByTimestampDesc(search, followedMembers, pageable);
     }
 
     public void createHonk(Member author, HonkRequest request) throws ValidationException {

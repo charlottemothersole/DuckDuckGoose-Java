@@ -2,6 +2,8 @@ package com.duckduckgoose.app.models.database;
 
 import jakarta.persistence.*;
 
+import java.util.Date;
+
 @Entity
 public class Honk {
 
@@ -14,11 +16,14 @@ public class Honk {
 
     private String content;
 
+    private Date timestamp;
+
     protected Honk() {}
 
     public Honk(Member author, String content) {
         this.author = author;
         this.content = content;
+        this.timestamp = new Date();
     }
 
     @Override
@@ -39,6 +44,10 @@ public class Honk {
 
     public String getContent() {
         return content;
+    }
+
+    public Date getTimestamp() {
+        return timestamp;
     }
 
 }
