@@ -2,20 +2,22 @@ package com.duckduckgoose.app.repositories;
 
 import com.duckduckgoose.app.models.database.Honk;
 import com.duckduckgoose.app.models.database.Member;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
+import java.util.Set;
 
 public interface HonkRepository extends JpaRepository<Honk, Long> {
 
-    List<Honk> findByContentContaining(String search);
+    Page<Honk> findByContentContaining(String search, Pageable pageable);
 
-    List<Honk> findByAuthor(Member author);
+    Page<Honk> findByAuthor(Member author, Pageable pageable);
 
-    List<Honk> findByContentContainingAndAuthor(String search, Member author);
+    Page<Honk> findByContentContainingAndAuthor(String search, Member author, Pageable pageable);
 
-    List<Honk> findByAuthorIn(List<Member> members);
+    Page<Honk> findByAuthorIn(Set<Member> members, Pageable pageable);
 
-    List<Honk> findByContentContainingAndAuthorIn(String search, List<Member> members);
+    Page<Honk> findByContentContainingAndAuthorIn(String search, Set<Member> members, Pageable pageable);
 
 }

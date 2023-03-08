@@ -7,9 +7,11 @@ import com.duckduckgoose.app.repositories.HonkRepository;
 import com.duckduckgoose.app.repositories.MemberRepository;
 import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Set;
 
 @Service
 public class HonkService {
@@ -24,30 +26,30 @@ public class HonkService {
         this.memberRepository = memberRepository;
     }
 
-    public List<Honk> getHonks() {
-        return honkRepository.findAll();
+    public Page<Honk> getHonks(Pageable pageable) {
+        return honkRepository.findAll(pageable);
     }
 
-    public List<Honk> getHonksContaining(String search) {
-        return honkRepository.findByContentContaining(search);
+    public Page<Honk> getHonksContaining(String search, Pageable pageable) {
+        return honkRepository.findByContentContaining(search, pageable);
     }
 
-    public List<Honk> getMemberHonks(Member author) {
-        return honkRepository.findByAuthor(author);
+    public Page<Honk> getMemberHonks(Member author, Pageable pageable) {
+        return honkRepository.findByAuthor(author, pageable);
     }
 
-    public List<Honk> getMemberHonksContaining(String search, Member author) {
-        return honkRepository.findByContentContainingAndAuthor(search, author);
+    public Page<Honk> getMemberHonksContaining(String search, Member author, Pageable pageable) {
+        return honkRepository.findByContentContainingAndAuthor(search, author, pageable);
     }
 
-    public List<Honk> getFollowedMemberHonks(Member followerMember) {
-        List<Member> followedMembers = memberRepository.findByFollowerMembersContaining(followerMember);
-        return honkRepository.findByAuthorIn(followedMembers);
+    public Page<Honk> getFollowedMemberHonks(Member followerMember, Pageable pageable) {
+        Set<Member> followedMembers = memberRepository.findByFollowerMembersContaining(followerMember);
+        return honkRepository.findByAuthorIn(followedMembers, pageable);
     }
 
-    public List<Honk> getFollowedMemberHonksContaining(String search, Member followerMember) {
-        List<Member> followedMembers = memberRepository.findByFollowerMembersContaining(followerMember);
-        return honkRepository.findByContentContainingAndAuthorIn(search, followedMembers);
+    public Page<Honk> getFollowedMemberHonksContaining(String search, Member followerMember, Pageable pageable) {
+        Set<Member> followedMembers = memberRepository.findByFollowerMembersContaining(followerMember);
+        return honkRepository.findByContentContainingAndAuthorIn(search, followedMembers, pageable);
     }
 
     public void createHonk(Member author, HonkRequest request) throws ValidationException {

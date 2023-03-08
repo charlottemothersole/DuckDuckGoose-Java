@@ -8,6 +8,9 @@ import com.duckduckgoose.app.models.view.HonksViewModel;
 import com.duckduckgoose.app.services.HonkService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -17,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.List;
+import static com.duckduckgoose.app.constants.PaginationConstants.PAGE_SIZE;
 
 @Controller
 public class HonkController {
@@ -33,9 +36,14 @@ public class HonkController {
     public ModelAndView getHonksPage(
             @RequestParam (value = "search", required = false) String search,
             @RequestParam (value = "filter", required = false) String filter,
+            @RequestParam (value = "page", required = false) Integer page,
             RedirectAttributes redirectAttributes
     ) {
-        List<Honk> honks;
+        Page<Honk> honks;
+        if (page == null) {
+            page = 1;
+        }
+        Pageable pageRequest = PageRequest.of(page - 1, PAGE_SIZE);
         if (filter != null && filter.equals("followedUsers")) {
             if (SecurityContextHolder.getContext().getAuthentication().getAuthorities()
                     .stream()
@@ -45,14 +53,14 @@ public class HonkController {
             }
             Member followerMember = ((MemberDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).member();
             if (search == null) {
-                honks = honkService.getFollowedMemberHonks(followerMember);
+                honks = honkService.getFollowedMemberHonks(followerMember, pageRequest);
             } else {
-                honks = honkService.getFollowedMemberHonksContaining(search, followerMember);
+                honks = honkService.getFollowedMemberHonksContaining(search, followerMember, pageRequest);
             }
         } else if (search == null) {
-            honks = honkService.getHonks();
+            honks = honkService.getHonks(pageRequest);
         } else {
-            honks = honkService.getHonksContaining(search);
+            honks = honkService.getHonksContaining(search, pageRequest);
         }
         HonksViewModel honksViewModel = new HonksViewModel(honks, search, filter);
         return new ModelAndView("honks", "model", honksViewModel);

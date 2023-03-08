@@ -1,7 +1,6 @@
 package com.duckduckgoose.app.models.database;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
 
 @Entity
 public class Honk {

@@ -1,10 +1,6 @@
 package com.duckduckgoose.app.models.request;
 
-import com.duckduckgoose.app.services.MemberService;
-import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Size;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 public class RegistrationRequest {
 

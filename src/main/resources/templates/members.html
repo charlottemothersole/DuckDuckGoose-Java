@@ -28,7 +28,7 @@
       </nav>
       <div class="card bg-info border-primary rounded-0 rounded-bottom">
         <div class="card-body">
-          <div class="card text-start mb-3" th:each="member : ${model.getMembers()}">
+          <div class="card text-start mb-3" th:each="member : ${model.getMembers().getContent()}">
             <div class="card-body">
               <h5 class="card-title"><a th:href="@{/member/{username}(username=${member.getUsername()})}" class="text-decoration-none" th:text="${'@' + member.getUsername()}"></a></h5>
               <p class="card-text">
@@ -38,20 +38,20 @@
               </p>
             </div>
           </div>
-          <nav aria-label="Page navigation" th:unless="${model.getMembers().isEmpty()}">
-<!--            <ul class="pagination justify-content-center mb-0">-->
-<!--              {% for page in users.iter_pages(left_current=1, right_current=1) %}-->
-<!--                {% if page %}-->
-<!--                  <li class="page-item {{ 'active' if page == users.page else '' }}">-->
-<!--                    <a href="{{ url_for('users', filter=filter, search=search, page=page) if search else url_for('users', filter=filter, page=page) }}" class="page-link">{{ page }}</a>-->
-<!--                  </li>-->
-<!--                {% else %}-->
-<!--                  <li class="page-item"><span class="page-link">&ctdot;</span></li>-->
-<!--                {% endif %}-->
-<!--              {% endfor %}-->
-<!--            </ul>-->
-          </nav>
           <p class="card-text" th:if="${model.getMembers().isEmpty()}">No members to show.</p>
+          <nav aria-label="Page navigation" th:unless="${model.getPages().isEmpty()}">
+            <ul class="pagination justify-content-center mb-0">
+              <li th:each="pageNumber: ${model.getPages()}" th:class="${'page-item' + (pageNumber == model.getMembers().getNumber() + 1 ? ' active' : '')}">
+                <a class="page-link"
+                   th:unless="${pageNumber == null}"
+                   th:text="${pageNumber}"
+                   th:href="@{/members(__(${#strings.isEmpty(model.getFilter())} ? '' : ('filter=' + ${model.getFilter()}))__,
+                                       page=${pageNumber},
+                                       __(${#strings.isEmpty(model.getSearch())} ? '' : ('search=' + ${model.getSearch()}))__)}"></a>
+                <span class="page-link" th:if="${pageNumber == null}">&ctdot;</span>
+              </li>
+            </ul>
+          </nav>
         </div>
       </div>
     </div>

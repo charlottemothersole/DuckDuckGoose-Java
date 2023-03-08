@@ -1,24 +1,29 @@
 package com.duckduckgoose.app.models.view;
 
 import com.duckduckgoose.app.models.database.Honk;
+import com.duckduckgoose.app.util.PaginationHelper;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 public class HonksViewModel {
 
-    private final List<Honk> honks;
+    private final Page<Honk> honks;
 
     private final String search;
 
     private final String filter;
 
-    public HonksViewModel(List<Honk> honks, String search, String filter) {
+    private final List<Integer> pages;
+
+    public HonksViewModel(Page<Honk> honks, String search, String filter) {
         this.honks = honks;
         this.search = search;
         this.filter = filter;
+        this.pages = PaginationHelper.getPageNumbers(honks);
     }
 
-    public List<Honk> getHonks() {
+    public Page<Honk> getHonks() {
         return honks;
     }
 
@@ -28,6 +33,10 @@ public class HonksViewModel {
 
     public String getFilter() {
         return filter;
+    }
+
+    public List<Integer> getPages() {
+        return pages;
     }
 
 }

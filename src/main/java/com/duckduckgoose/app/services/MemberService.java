@@ -3,9 +3,9 @@ package com.duckduckgoose.app.services;
 import com.duckduckgoose.app.models.database.Member;
 import com.duckduckgoose.app.repositories.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class MemberService {
@@ -17,20 +17,20 @@ public class MemberService {
         this.memberRepository = memberRepository;
     }
 
-    public List<Member> getMembers() {
-        return memberRepository.findAll();
+    public Page<Member> getMembers(Pageable pageable) {
+        return memberRepository.findAll(pageable);
     }
 
-    public List<Member> getMembersContaining(String search) {
-        return memberRepository.findByUsernameContaining(search);
+    public Page<Member> getMembersContaining(String search, Pageable pageable) {
+        return memberRepository.findByUsernameContaining(search, pageable);
     }
 
-    public List<Member> getFollowedMembers(Member followerMember) {
-        return memberRepository.findAll();
+    public Page<Member> getFollowedMembers(Member followerMember, Pageable pageable) {
+        return memberRepository.findByFollowerMembersContaining(followerMember, pageable);
     }
 
-    public List<Member> getFollowedMembersContaining(String search, Member followerMember) {
-        return memberRepository.findByUsernameContaining(search);
+    public Page<Member> getFollowedMembersContaining(String search, Member followerMember, Pageable pageable) {
+        return memberRepository.findByUsernameContainingAndFollowerMembersContaining(search, followerMember, pageable);
     }
 
     public Member getMemberByUsername(String username) {

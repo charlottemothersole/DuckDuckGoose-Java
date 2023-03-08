@@ -8,6 +8,9 @@ import com.duckduckgoose.app.models.view.MembersViewModel;
 import com.duckduckgoose.app.services.HonkService;
 import com.duckduckgoose.app.services.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.List;
+import static com.duckduckgoose.app.constants.PaginationConstants.PAGE_SIZE;
 
 @Controller
 public class MemberController {
@@ -36,9 +39,14 @@ public class MemberController {
     public ModelAndView getMembersPage(
             @RequestParam(value = "search", required = false) String search,
             @RequestParam(value = "filter", required = false) String filter,
+            @RequestParam (value = "page", required = false) Integer page,
             RedirectAttributes redirectAttributes
     ) {
-        List<Member> members;
+        Page<Member> members;
+        if (page == null) {
+            page = 1;
+        }
+        Pageable pageRequest = PageRequest.of(page - 1, PAGE_SIZE);
         if (filter != null && filter.equals("followedUsers")) {
             if (SecurityContextHolder.getContext().getAuthentication().getAuthorities()
                     .stream()
@@ -48,14 +56,14 @@ public class MemberController {
             }
             Member followerMember = ((MemberDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).member();
             if (search == null) {
-                members = memberService.getFollowedMembers(followerMember);
+                members = memberService.getFollowedMembers(followerMember, pageRequest);
             } else {
-                members = memberService.getFollowedMembersContaining(search, followerMember);
+                members = memberService.getFollowedMembersContaining(search, followerMember, pageRequest);
             }
         } else if (search == null) {
-            members = memberService.getMembers();
+            members = memberService.getMembers(pageRequest);
         } else {
-            members = memberService.getMembersContaining(search);
+            members = memberService.getMembersContaining(search, pageRequest);
         }
         MembersViewModel membersViewModel = new MembersViewModel(members, search, filter);
         return new ModelAndView("members", "model", membersViewModel);
@@ -64,14 +72,19 @@ public class MemberController {
     @RequestMapping(value = "/member/{username}", method = RequestMethod.GET)
     public ModelAndView getMemberPage(
             @PathVariable String username,
-            @RequestParam(value = "search", required = false) String search
+            @RequestParam(value = "search", required = false) String search,
+            @RequestParam (value = "page", required = false) Integer page
     ) {
         Member member = memberService.getMemberByUsername(username);
-        List<Honk> honks;
+        Page<Honk> honks;
+        if (page == null) {
+            page = 1;
+        }
+        Pageable pageRequest = PageRequest.of(page - 1, PAGE_SIZE);
         if (search == null) {
-            honks = honkService.getMemberHonks(member);
+            honks = honkService.getMemberHonks(member, pageRequest);
         } else {
-            honks = honkService.getMemberHonksContaining(search, member);
+            honks = honkService.getMemberHonksContaining(search, member, pageRequest);
         }
         MemberViewModel memberViewModel = new MemberViewModel(member, honks, search);
         return new ModelAndView("member", "model", memberViewModel);
