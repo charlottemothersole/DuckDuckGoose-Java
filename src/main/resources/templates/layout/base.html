@@ -11,7 +11,7 @@
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://duckduckgoose.onrender.com/" />
     <meta property="og:image" th:content="|@{/images/android-chrome-512x512.png}|" />
-    <title>DuckDuckGoose</title>
+    <title layout:title-pattern="$LAYOUT_TITLE | $CONTENT_TITLE">DuckDuckGoose</title>
     <link rel="apple-touch-icon" sizes="180x180" th:href="@{/images/apple-touch-icon.png}">
     <link rel="icon" type="image/png" sizes="32x32" th:href="@{/images/favicon-32x32.png}">
     <link rel="icon" type="image/png" sizes="16x16" th:href="@{/images/favicon-16x16.png}">
