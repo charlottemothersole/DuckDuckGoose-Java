@@ -55,5 +55,4 @@ public class HonkService {
         Honk honk = new Honk(author, request.getContent());
         honkRepository.save(honk);
     }
-
 }

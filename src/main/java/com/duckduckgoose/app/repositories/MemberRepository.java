@@ -18,5 +18,4 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Page<Member> findByFollowerMembersContaining(Member member, Pageable pageable);
 
     Page<Member> findByUsernameContainingAndFollowerMembersContaining(String search, Member member, Pageable pageable);
-
 }

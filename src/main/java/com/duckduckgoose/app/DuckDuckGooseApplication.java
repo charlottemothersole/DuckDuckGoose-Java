@@ -9,5 +9,4 @@ public class DuckDuckGooseApplication {
     public static void main(String[] args) {
         SpringApplication.run(DuckDuckGooseApplication.class, args);
     }
-
 }

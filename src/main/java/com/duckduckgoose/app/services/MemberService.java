@@ -48,5 +48,4 @@ public class MemberService {
         followerMember.getFollowedMembers().remove(followedMember);
         memberRepository.save(followerMember);
     }
-
 }

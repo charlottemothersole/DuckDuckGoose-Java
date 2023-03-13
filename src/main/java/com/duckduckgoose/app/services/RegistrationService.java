@@ -24,5 +24,4 @@ public class RegistrationService {
         String encodedPassword = authHelper.getPasswordEncoder().encode(request.getPassword());
         memberRepository.save(new Member(request.getUsername(), encodedPassword));
     }
-
 }

@@ -58,5 +58,4 @@ public final class PaginationHelper {
     private static int getPageIndex(Integer pageNumber) {
         return pageNumber != null ? pageNumber - 1 : 0;
     }
-
 }

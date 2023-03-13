@@ -49,5 +49,4 @@ public class Honk {
     public Date getTimestamp() {
         return timestamp;
     }
-
 }

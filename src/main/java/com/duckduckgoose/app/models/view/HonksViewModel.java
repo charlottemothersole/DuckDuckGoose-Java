@@ -38,5 +38,4 @@ public class HonksViewModel {
     public List<Integer> getPages() {
         return pages;
     }
-
 }

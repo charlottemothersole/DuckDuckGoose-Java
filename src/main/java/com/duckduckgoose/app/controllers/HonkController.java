@@ -71,5 +71,4 @@ public class HonkController {
         redirectAttributes.addFlashAttribute("flashMessage", "Honk posted successfully.");
         return new ModelAndView("redirect:/honks");
     }
-
 }

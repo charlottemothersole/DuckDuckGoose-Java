@@ -39,5 +39,4 @@ public class MemberViewModel {
     public List<Integer> getPages() {
         return pages;
     }
-
 }

@@ -11,5 +11,4 @@ public class TemplateConfig {
     public LayoutDialect layoutDialect() {
         return new LayoutDialect();
     }
-
 }

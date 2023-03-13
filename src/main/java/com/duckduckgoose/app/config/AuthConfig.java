@@ -48,5 +48,4 @@ public class AuthConfig {
         authenticationManagerBuilder.authenticationProvider(authHelper.authenticationProvider());
         return authenticationManagerBuilder.build();
     }
-
 }

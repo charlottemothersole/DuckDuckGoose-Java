@@ -70,5 +70,4 @@ public class Member {
     public Set<Member> getFollowedMembers() {
         return followedMembers;
     }
-
 }

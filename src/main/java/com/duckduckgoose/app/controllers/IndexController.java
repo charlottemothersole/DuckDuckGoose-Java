@@ -12,5 +12,4 @@ public class IndexController {
     public ModelAndView getWelcomePage() {
         return new ModelAndView("welcome");
     }
-
 }
