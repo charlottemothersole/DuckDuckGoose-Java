@@ -6,7 +6,7 @@
     <div class="fixed-top" th:fragment="navbar">
       <nav class="navbar navbar-dark bg-primary">
         <div class="container-fluid justify-content-between">
-          <a class="navbar-brand d-flex align-items-center" href="/honks">
+          <a class="navbar-brand d-flex align-items-center" th:href="@{/honks}">
             <img th:src="@{/images/logo.png}" alt="Logo" width="48" height="48" style="margin: -12px 0 -12px -6px;">
             DuckDuckGoose
           </a>
