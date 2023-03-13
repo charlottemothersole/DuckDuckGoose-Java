@@ -2,6 +2,7 @@ package com.duckduckgoose.app.models.auth;
 
 import com.duckduckgoose.app.models.database.Member;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
@@ -11,7 +12,8 @@ public record MemberDetails(Member member) implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_MEMBER");
+        return List.of(authority);
     }
 
     @Override

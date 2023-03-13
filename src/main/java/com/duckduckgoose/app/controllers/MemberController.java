@@ -1,26 +1,25 @@
 package com.duckduckgoose.app.controllers;
 
-import com.duckduckgoose.app.models.auth.MemberDetails;
 import com.duckduckgoose.app.models.database.Honk;
 import com.duckduckgoose.app.models.database.Member;
 import com.duckduckgoose.app.models.view.MemberViewModel;
 import com.duckduckgoose.app.models.view.MembersViewModel;
 import com.duckduckgoose.app.services.HonkService;
 import com.duckduckgoose.app.services.MemberService;
+import com.duckduckgoose.app.util.AuthHelper;
+import com.duckduckgoose.app.util.PaginationHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import static com.duckduckgoose.app.constants.PaginationConstants.PAGE_SIZE;
 
 @Controller
 public class MemberController {
@@ -43,27 +42,16 @@ public class MemberController {
             RedirectAttributes redirectAttributes
     ) {
         Page<Member> members;
-        if (page == null) {
-            page = 1;
-        }
-        Pageable pageRequest = PageRequest.of(page - 1, PAGE_SIZE);
+        Pageable pageRequest = PaginationHelper.getPageRequest(page);
         if (filter != null && filter.equals("followedUsers")) {
-            if (SecurityContextHolder.getContext().getAuthentication().getAuthorities()
-                    .stream()
-                    .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ANONYMOUS"))) {
+            if (!AuthHelper.isAuthenticated()) {
                 redirectAttributes.addFlashAttribute("redirected", true);
                 return new ModelAndView("redirect:/login");
             }
-            Member followerMember = ((MemberDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).member();
-            if (search == null) {
-                members = memberService.getFollowedMembers(followerMember, pageRequest);
-            } else {
-                members = memberService.getFollowedMembersContaining(search, followerMember, pageRequest);
-            }
-        } else if (search == null) {
-            members = memberService.getMembers(pageRequest);
+            Member followerMember = AuthHelper.getAuthenticatedMember();
+            members = memberService.getFollowedMembers(followerMember, search, pageRequest);
         } else {
-            members = memberService.getMembersContaining(search, pageRequest);
+            members = memberService.getMembers(search, pageRequest);
         }
         MembersViewModel membersViewModel = new MembersViewModel(members, search, filter);
         return new ModelAndView("members", "model", membersViewModel);
@@ -76,23 +64,19 @@ public class MemberController {
             @RequestParam (value = "page", required = false) Integer page
     ) {
         Member member = memberService.getMemberByUsername(username);
+        if (member == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
         Page<Honk> honks;
-        if (page == null) {
-            page = 1;
-        }
-        Pageable pageRequest = PageRequest.of(page - 1, PAGE_SIZE);
-        if (search == null) {
-            honks = honkService.getMemberHonks(member, pageRequest);
-        } else {
-            honks = honkService.getMemberHonksContaining(search, member, pageRequest);
-        }
+        Pageable pageRequest = PaginationHelper.getPageRequest(page);
+        honks = honkService.getMemberHonks(member, search, pageRequest);
         MemberViewModel memberViewModel = new MemberViewModel(member, honks, search);
         return new ModelAndView("member", "model", memberViewModel);
     }
 
     @RequestMapping(value = "/member/{username}/follow", method = RequestMethod.POST)
     public ModelAndView followMember(@PathVariable String username) {
-        Member followerMember = ((MemberDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).member();
+        Member followerMember = AuthHelper.getAuthenticatedMember();
         Member followedMember = memberService.getMemberByUsername(username);
         memberService.addFollower(followerMember, followedMember);
         return new ModelAndView("redirect:/member/" + username);
@@ -100,7 +84,7 @@ public class MemberController {
 
     @RequestMapping(value = "/member/{username}/unfollow", method = RequestMethod.POST)
     public ModelAndView unfollowMember(@PathVariable String username) {
-        Member followerMember = ((MemberDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).member();
+        Member followerMember = AuthHelper.getAuthenticatedMember();
         Member followedMember = memberService.getMemberByUsername(username);
         memberService.removeFollower(followerMember, followedMember);
         return new ModelAndView("redirect:/member/" + username);

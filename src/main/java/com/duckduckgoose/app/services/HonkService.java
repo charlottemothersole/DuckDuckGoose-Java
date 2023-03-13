@@ -26,30 +26,29 @@ public class HonkService {
         this.memberRepository = memberRepository;
     }
 
-    public Page<Honk> getHonks(Pageable pageable) {
-        return honkRepository.findAllByOrderByTimestampDesc(pageable);
+    public Page<Honk> getHonks(String search, Pageable pageable) {
+        if (search == null || search.isBlank()) {
+            return honkRepository.findAllByOrderByTimestampDesc(pageable);
+        } else {
+            return honkRepository.findByContentContainingOrderByTimestampDesc(search, pageable);
+        }
     }
 
-    public Page<Honk> getHonksContaining(String search, Pageable pageable) {
-        return honkRepository.findByContentContainingOrderByTimestampDesc(search, pageable);
+    public Page<Honk> getMemberHonks(Member author, String search, Pageable pageable) {
+        if (search == null || search.isBlank()) {
+            return honkRepository.findByAuthorOrderByTimestampDesc(author, pageable);
+        } else {
+            return honkRepository.findByContentContainingAndAuthorOrderByTimestampDesc(search, author, pageable);
+        }
     }
 
-    public Page<Honk> getMemberHonks(Member author, Pageable pageable) {
-        return honkRepository.findByAuthorOrderByTimestampDesc(author, pageable);
-    }
-
-    public Page<Honk> getMemberHonksContaining(String search, Member author, Pageable pageable) {
-        return honkRepository.findByContentContainingAndAuthorOrderByTimestampDesc(search, author, pageable);
-    }
-
-    public Page<Honk> getFollowedMemberHonks(Member followerMember, Pageable pageable) {
+    public Page<Honk> getFollowedMemberHonks(Member followerMember, String search, Pageable pageable) {
         Set<Member> followedMembers = memberRepository.findByFollowerMembersContaining(followerMember);
-        return honkRepository.findByAuthorInOrderByTimestampDesc(followedMembers, pageable);
-    }
-
-    public Page<Honk> getFollowedMemberHonksContaining(String search, Member followerMember, Pageable pageable) {
-        Set<Member> followedMembers = memberRepository.findByFollowerMembersContaining(followerMember);
-        return honkRepository.findByContentContainingAndAuthorInOrderByTimestampDesc(search, followedMembers, pageable);
+        if (search == null || search.isBlank()) {
+            return honkRepository.findByAuthorInOrderByTimestampDesc(followedMembers, pageable);
+        } else {
+            return honkRepository.findByContentContainingAndAuthorInOrderByTimestampDesc(search, followedMembers, pageable);
+        }
     }
 
     public void createHonk(Member author, HonkRequest request) throws ValidationException {

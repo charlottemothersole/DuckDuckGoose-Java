@@ -2,6 +2,7 @@ package com.duckduckgoose.app.controllers;
 
 import com.duckduckgoose.app.models.request.RegistrationRequest;
 import com.duckduckgoose.app.services.RegistrationService;
+import com.duckduckgoose.app.util.AuthHelper;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -24,11 +25,17 @@ public class RegistrationController {
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public ModelAndView getRegistrationPage() {
+        if (AuthHelper.isAuthenticated()) {
+            return new ModelAndView("redirect:/honks");
+        }
         return new ModelAndView("register", "registrationRequest", new RegistrationRequest());
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ModelAndView onRegistrationSubmit(@Valid RegistrationRequest registrationRequest, BindingResult bindingResult) {
+    public ModelAndView onRegistrationSubmit(
+            @Valid RegistrationRequest registrationRequest,
+            BindingResult bindingResult
+    ) {
         if (!registrationRequest.getPassword().equals(registrationRequest.getConfirmPassword())) {
             bindingResult.addError(new FieldError("registrationRequest", "confirmPassword", "Those passwords don't match"));
         }

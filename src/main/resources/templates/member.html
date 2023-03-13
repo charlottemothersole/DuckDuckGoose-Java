@@ -10,15 +10,15 @@
   <body>
     <div layout:fragment="content">
       <div class="bg-info border-top border-start border-end border-primary rounded-top p-2">
-        <h1 class="fs-4 mb-0" th:text="${#authorization.expression('hasRole(''ROLE_ANONYMOUS'')')
-                                           || !model.getMember().getUsername().equals(#authentication.getName())
-                                           ? 'Honks by @' + model.getMember().getUsername()
-                                           : 'My honks'}"></h1>
-          <p class="lm-sm mt-1 mb-0" th:if="${#authorization.expression('hasRole(''ROLE_ANONYMOUS'')')}">
+        <h1 class="fs-4 mb-0" th:text="${#authorization.expression('hasRole(''ROLE_MEMBER'')')
+                                           && model.getMember().getUsername().equals(#authentication.getName())
+                                           ? 'My honks'
+                                           : 'Honks by @' + model.getMember().getUsername()}"></h1>
+          <p class="lm-sm mt-1 mb-0" th:unless="${#authorization.expression('hasRole(''ROLE_MEMBER'')')}">
             You must <a th:href="@{/login}">log in</a> to follow <strong th:text="${model.getMember().getUsername()}"></strong>.
           </p>
           <form method="post"
-                th:if="${!#authorization.expression('hasRole(''ROLE_ANONYMOUS'')') &&
+                th:if="${#authorization.expression('hasRole(''ROLE_MEMBER'')') &&
                            !model.getMember().getUsername().equals(#authentication.getName()) &&
                            model.getMember().getFollowerMembers().?[username.equals(#authentication.getName())].isEmpty()}"
                 th:action="@{/member/{username}/follow(username=${model.getMember().getUsername()})}">
@@ -28,7 +28,7 @@
             </p>
           </form>
           <form method="post"
-                th:if="${!#authorization.expression('hasRole(''ROLE_ANONYMOUS'')') &&
+                th:if="${#authorization.expression('hasRole(''ROLE_MEMBER'')') &&
                            !model.getMember().getUsername().equals(#authentication.getName()) &&
                            !model.getMember().getFollowerMembers().?[username.equals(#authentication.getName())].isEmpty()}"
                 th:action="@{/member/{username}/unfollow(username=${model.getMember().getUsername()})}">

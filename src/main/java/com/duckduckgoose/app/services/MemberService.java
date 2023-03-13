@@ -1,10 +1,12 @@
 package com.duckduckgoose.app.services;
 
+import com.duckduckgoose.app.models.auth.MemberDetails;
 import com.duckduckgoose.app.models.database.Member;
 import com.duckduckgoose.app.repositories.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,20 +19,20 @@ public class MemberService {
         this.memberRepository = memberRepository;
     }
 
-    public Page<Member> getMembers(Pageable pageable) {
-        return memberRepository.findAll(pageable);
+    public Page<Member> getMembers(String search, Pageable pageable) {
+        if (search == null || search.isBlank()) {
+            return memberRepository.findAll(pageable);
+        } else {
+            return memberRepository.findByUsernameContaining(search, pageable);
+        }
     }
 
-    public Page<Member> getMembersContaining(String search, Pageable pageable) {
-        return memberRepository.findByUsernameContaining(search, pageable);
-    }
-
-    public Page<Member> getFollowedMembers(Member followerMember, Pageable pageable) {
-        return memberRepository.findByFollowerMembersContaining(followerMember, pageable);
-    }
-
-    public Page<Member> getFollowedMembersContaining(String search, Member followerMember, Pageable pageable) {
-        return memberRepository.findByUsernameContainingAndFollowerMembersContaining(search, followerMember, pageable);
+    public Page<Member> getFollowedMembers(Member followerMember, String search, Pageable pageable) {
+        if (search == null || search.isBlank()) {
+            return memberRepository.findByFollowerMembersContaining(followerMember, pageable);
+        } else {
+            return memberRepository.findByUsernameContainingAndFollowerMembersContaining(search, followerMember, pageable);
+        }
     }
 
     public Member getMemberByUsername(String username) {

@@ -1,5 +1,6 @@
 package com.duckduckgoose.app.controllers;
 
+import com.duckduckgoose.app.util.AuthHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -10,6 +11,9 @@ public class LoginController {
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView getLoginPage() {
+        if (AuthHelper.isAuthenticated()) {
+            return new ModelAndView("redirect:/honks");
+        }
         return new ModelAndView("login");
     }
 
