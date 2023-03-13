@@ -1,12 +1,10 @@
 package com.duckduckgoose.app.services;
 
-import com.duckduckgoose.app.models.auth.MemberDetails;
 import com.duckduckgoose.app.models.database.Member;
 import com.duckduckgoose.app.repositories.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
