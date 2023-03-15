@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:title" content="DuckDuckGoose" />
+    <meta property="og:description" content="DuckDuckGoose is a platform where people can post brief thoughts and updates." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://duckduckgoose.onrender.com/" />
+    <meta property="og:image" th:content="|@{/images/android-chrome-512x512.png}|" />
+    <title layout:title-pattern="$LAYOUT_TITLE | $CONTENT_TITLE">DuckDuckGoose</title>
+    <link rel="apple-touch-icon" sizes="180x180" th:href="@{/images/apple-touch-icon.png}">
+    <link rel="icon" type="image/png" sizes="32x32" th:href="@{/images/favicon-32x32.png}">
+    <link rel="icon" type="image/png" sizes="16x16" th:href="@{/images/favicon-16x16.png}">
+    <link rel="manifest" th:href="@{/manifests/site.webmanifest}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap-icons.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+  </head>
+  <body th:style="|background: url('@{/images/background.png}') center / cover no-repeat fixed;|">
+    <div th:replace="~{layout/navbar :: navbar}"></div>
+    <main class="mx-auto mb-5 p-3 text-center">
+      <div layout:fragment="content"></div>
+    </main>
+  </body>
+</html>

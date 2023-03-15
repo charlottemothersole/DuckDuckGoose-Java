@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/base}">
+  <head>
+    <title>Welcome</title>
+  </head>
+  <body>
+    <div layout:fragment="content">
+      <div class="card border-primary">
+        <div class="card-header bg-info border-primary">
+          <h1 class="fs-4 mb-0">Welcome to DuckDuckGoose.</h1>
+        </div>
+        <div class="card-body">
+          <p>DuckDuckGoose is a platform where people can post brief thoughts and updates. These posts are known as honks.</p>
+          <a th:href="@{/honks}" role="button" class="btn btn-primary">View some honks</a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+  <body>
+    <div class="fixed-top" th:fragment="navbar">
+      <nav class="navbar navbar-dark bg-primary">
+        <div class="container-fluid justify-content-between">
+          <a class="navbar-brand d-flex align-items-center" th:href="@{/honks}">
+            <img th:src="@{/images/logo.png}" alt="Logo" width="48" height="48" style="margin: -12px 0 -12px -6px;">
+            DuckDuckGoose
+          </a>
+          <div class="d-flex" th:unless="${#authorization.expression('hasRole(''ROLE_MEMBER'')')}">
+            <a role="button" class="btn btn-outline-light me-2 {{ request.endpoint }}" th:href="@{/login}">Log in</a>
+            <a role="button" class="btn btn-outline-light" th:href="@{/register}">Register</a>
+          </div>
+          <div class="d-flex" th:if="${#authorization.expression('hasRole(''ROLE_MEMBER'')')}">
+            <a role="button" class="btn btn-outline-light me-2" th:href="@{/member/{username}(username=${#authentication.getName()})}">My page</a>
+            <form method="post" th:action="@{/logout}" class="d-inline-block">
+              <button type="submit" class="btn btn-outline-light">Log out</button>
+            </form>
+          </div>
+        </div>
+      </nav>
+      <nav class="navbar navbar-expand-lg bg-light shadow">
+        <div class="container-fluid justify-content-start">
+          <a class="btn btn-outline-primary btn-sm me-2" th:href="@{/honks}">Honks</a>
+          <a class="btn btn-outline-primary btn-sm me-2" th:href="@{/members}">Members</a>
+          <a class="btn btn-outline-primary btn-sm" th:href="@{/honk}">Post a honk</a>
+        </div>
+      </nav>
+    </div>
+  </body>
+</html>
