@@ -48,6 +48,7 @@ public class HonkController {
         } else {
             honks = honkService.getHonks(search, pageRequest);
         }
+
         HonksViewModel honksViewModel = new HonksViewModel(honks, search, filter);
         return new ModelAndView("honks", "model", honksViewModel);
     }

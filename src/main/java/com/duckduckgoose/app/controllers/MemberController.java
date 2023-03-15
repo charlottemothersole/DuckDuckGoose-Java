@@ -53,6 +53,7 @@ public class MemberController {
         } else {
             members = memberService.getMembers(search, pageRequest);
         }
+
         MembersViewModel membersViewModel = new MembersViewModel(members, search, filter);
         return new ModelAndView("members", "model", membersViewModel);
     }
@@ -70,6 +71,7 @@ public class MemberController {
         Page<Honk> honks;
         Pageable pageRequest = PaginationHelper.getPageRequest(page);
         honks = honkService.getMemberHonks(member, search, pageRequest);
+
         MemberViewModel memberViewModel = new MemberViewModel(member, honks, search);
         return new ModelAndView("member", "model", memberViewModel);
     }
