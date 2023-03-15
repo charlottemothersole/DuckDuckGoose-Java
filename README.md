@@ -23,11 +23,11 @@
 1. Run this command to run your code:  
    `./gradlew bootRun`
 
-## Setting up PostgresSQL
+## Setting up PostgreSQL
 
-Before you run the app you will need to make sure you've got PostgresSQL installed and a database set up.
+Before you run the app you will need to make sure you've got PostgreSQL installed and a database set up.
 
-### Installing PostgresSQL and pgAdmin
+### Installing PostgreSQL and pgAdmin
 
 1. Download and install the [PostgreSQL server software](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads) if you haven't already.
 
