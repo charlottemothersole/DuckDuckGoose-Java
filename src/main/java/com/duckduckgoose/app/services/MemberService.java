@@ -17,4 +17,8 @@ public class MemberService {
         this.memberRepository = memberRepository;
     }
 
+    public Member getMemberByUsername(String username) {
+        return memberRepository.findByUsername(username);
+    }
+
 }
