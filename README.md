@@ -1,7 +1,6 @@
 # DuckDuckGoose
 
-1. Fork this repo
-    * Click `Fork` in the top-right of the page - this will create a copy of this repo in **your own GitHub account**
+1. Fork this repo: click `Fork` in the top-right of the page - this will create a copy of this repo in **your own GitHub account**
 
 1. Clone (download) the repo
     * Go to your newly-created fork of the repo (on GitHub).
@@ -11,7 +10,7 @@
       Your trainer will be able to help you with this.
 
 1. "Cloning the repo" will create a folder on your computer with the files from this repo.  
-   Open this folder in IntelliJ / Visual Studio Code.
+   Open this folder in  Visual Studio Code.
 
 1. Make sure you've got PostgreSQL and pgAdmin installed. You'll need to set up a user and a database for this project.
    All instructions for this step are in the `Setting up Postgres` section below.
