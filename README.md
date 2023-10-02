@@ -1,6 +1,7 @@
 # DuckDuckGoose
 
 1. Fork this repo: click `Fork` in the top-right of the page - this will create a copy of this repo in **your own GitHub account**
+    * **Uncheck the _"Copy the main branch only"_ checkbox**, as we will need all the other branches
 
 1. Clone (download) the repo
     * Go to your newly-created fork of the repo (on GitHub).
