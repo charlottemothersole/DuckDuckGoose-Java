@@ -19,8 +19,12 @@ public class MemberService {
 
     public Member getMemberByUsername(String username) {
         return memberRepository.findByUsername(username);
+<<<<<<< HEAD
     }
     
+=======
+
+>>>>>>> 8007acbbbfa3ca90239e22d431a14d45a25a0dec
     public Page<Member> getMembers(String search, Pageable pageable) {
         if (search == null || search.isBlank()) {
             return memberRepository.findAll(pageable);

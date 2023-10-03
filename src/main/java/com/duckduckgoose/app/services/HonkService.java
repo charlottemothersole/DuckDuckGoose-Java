@@ -32,7 +32,7 @@ public class HonkService {
         } else {
             return honkRepository.findByContentContainingAndAuthorOrderByTimestampDesc(search, author, pageable);
         }
-    }
+
     public Page<Honk> getHonks(String search, Pageable pageable) {
         if (search == null || search.isBlank()) {
             return honkRepository.findAllByOrderByTimestampDesc(pageable);

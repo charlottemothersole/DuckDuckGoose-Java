@@ -35,6 +35,9 @@ public class MemberController {
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 8007acbbbfa3ca90239e22d431a14d45a25a0dec
     @RequestMapping(value = "/member/{username}", method = RequestMethod.GET)
     public ModelAndView getMemberPage(
             @PathVariable String username,
@@ -48,7 +51,10 @@ public class MemberController {
         MemberViewModel memberViewModel = new MemberViewModel(member, honks, search);
         return new ModelAndView("member", "model", memberViewModel);
     }
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 8007acbbbfa3ca90239e22d431a14d45a25a0dec
     @RequestMapping(value = "/members", method = RequestMethod.GET)
     public ModelAndView getMembersPage(
             @RequestParam(value = "search", required = false) String search,
@@ -63,6 +69,9 @@ public class MemberController {
         MembersViewModel membersViewModel = new MembersViewModel(members, search, filter);
         return new ModelAndView("members", "model", membersViewModel);
     }
+<<<<<<< HEAD
 
 >>>>>>> main
+=======
+>>>>>>> 8007acbbbfa3ca90239e22d431a14d45a25a0dec
 }
