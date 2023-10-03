@@ -34,6 +34,7 @@ public class MemberController {
         this.honkService = honkService;
     }
 
+<<<<<<< HEAD
     @RequestMapping(value = "/member/{username}", method = RequestMethod.GET)
     public ModelAndView getMemberPage(
             @PathVariable String username,
@@ -47,4 +48,21 @@ public class MemberController {
         MemberViewModel memberViewModel = new MemberViewModel(member, honks, search);
         return new ModelAndView("member", "model", memberViewModel);
     }
+=======
+    @RequestMapping(value = "/members", method = RequestMethod.GET)
+    public ModelAndView getMembersPage(
+            @RequestParam(value = "search", required = false) String search,
+            @RequestParam(value = "filter", required = false) String filter,
+            @RequestParam (value = "page", required = false) Integer page
+    ) {
+        Page<Member> members;
+        Pageable pageRequest = PaginationHelper.getPageRequest(page);
+        members = memberService.getMembers(search, pageRequest);
+
+
+        MembersViewModel membersViewModel = new MembersViewModel(members, search, filter);
+        return new ModelAndView("members", "model", membersViewModel);
+    }
+
+>>>>>>> main
 }
