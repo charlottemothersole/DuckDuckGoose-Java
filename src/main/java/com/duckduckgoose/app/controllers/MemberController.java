@@ -34,10 +34,6 @@ public class MemberController {
         this.honkService = honkService;
     }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 8007acbbbfa3ca90239e22d431a14d45a25a0dec
     @RequestMapping(value = "/member/{username}", method = RequestMethod.GET)
     public ModelAndView getMemberPage(
             @PathVariable String username,
@@ -51,10 +47,7 @@ public class MemberController {
         MemberViewModel memberViewModel = new MemberViewModel(member, honks, search);
         return new ModelAndView("member", "model", memberViewModel);
     }
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 8007acbbbfa3ca90239e22d431a14d45a25a0dec
+
     @RequestMapping(value = "/members", method = RequestMethod.GET)
     public ModelAndView getMembersPage(
             @RequestParam(value = "search", required = false) String search,
@@ -64,14 +57,10 @@ public class MemberController {
         Page<Member> members;
         Pageable pageRequest = PaginationHelper.getPageRequest(page);
         members = memberService.getMembers(search, pageRequest);
-
+    
 
         MembersViewModel membersViewModel = new MembersViewModel(members, search, filter);
+        
         return new ModelAndView("members", "model", membersViewModel);
     }
-<<<<<<< HEAD
-
->>>>>>> main
-=======
->>>>>>> 8007acbbbfa3ca90239e22d431a14d45a25a0dec
 }
