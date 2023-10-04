@@ -26,6 +26,10 @@ public class HonkService {
         this.memberRepository = memberRepository;
     }
 
+    public void createHonk(Member author, HonkRequest request) throws ValidationException {
+        Honk honk = new Honk(author, request.getContent());
+    }
+    
     public Page<Honk> getMemberHonks(Member author, String search, Pageable pageable) {
         if (search == null || search.isBlank()) {
             return honkRepository.findByAuthorOrderByTimestampDesc(author, pageable);
