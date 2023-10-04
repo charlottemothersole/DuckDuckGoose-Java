@@ -21,7 +21,6 @@ public class MemberService {
         return memberRepository.findByUsername(username);
     }
     
-
     public Page<Member> getMembers(String search, Pageable pageable) {
         if (search == null || search.isBlank()) {
             return memberRepository.findAll(pageable);
@@ -30,4 +29,21 @@ public class MemberService {
         }
     }
 
+    public Page<Member> getFollowedMembers(Member followerMember, String search, Pageable pageable) {
+        if (search == null || search.isBlank()) {
+            return memberRepository.findByFollowerMembersContaining(followerMember, pageable);
+        } else {
+            return memberRepository.findByUsernameContainingAndFollowerMembersContaining(search, followerMember, pageable);
+        }
+    }
+
+    public void addFollower(Member followerMember, Member followedMember) {
+        followerMember.getFollowedMembers().add(followedMember);
+        memberRepository.save(followerMember);
+    }
+
+    public void removeFollower(Member followerMember, Member followedMember) {
+        followerMember.getFollowedMembers().remove(followedMember);
+        memberRepository.save(followerMember);
+    }
 }
